@@ -39,7 +39,7 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
               <Phone className="w-5 h-5 text-zinc-900" />
               <div>
                 <h4 className="text-xs text-zinc-500">WhatsApp / Telepon</h4>
-                <p className="text-sm text-zinc-900 font-medium">+62 812-3456-7890</p>
+                <p className="text-sm text-zinc-900 font-medium">+62 895-1352-3714</p>
               </div>
             </motion.div>
 
@@ -106,7 +106,7 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
                 <label className="block text-xs text-zinc-500 mb-1">Nomor WhatsApp</label>
                 <input
                   type="tel"
-                  placeholder="0812xxxx"
+                  placeholder="089513523714"
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
                   required
                 />

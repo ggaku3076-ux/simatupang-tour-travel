@@ -19,7 +19,7 @@ export const BookingModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const text = `Halo Simatupang Tour & Travel,%0A%0ASaya ingin memesan via website:%0A- Nama: ${name}%0A- WhatsApp: ${phone}%0A- Paket/Layanan: ${service}%0A- Tanggal Keberangkatan: ${date}%0A- Catatan: ${notes || '-'}`;
-    window.open(`https://wa.me/6281234567890?text=${text}`, '_blank');
+    window.open(`https://wa.me/6289513523714?text=${text}`, '_blank');
     onClose();
   };
 
@@ -72,7 +72,7 @@ export const BookingModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="0812xxxxxxxx"
+                placeholder="089513523714"
                 className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
                 required
               />
