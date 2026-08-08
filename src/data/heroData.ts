@@ -32,7 +32,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     category: 'Pulau Merah',
     headline: 'SURGA TERSEMBUNYI PESISIR SELATAN BANYUWANGI',
     description: 'Pantai pasir putih dengan pemandangan bukit merah eksotik, ideal untuk liburan keluarga & private gateway.',
-    bgImage: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1920&auto=format&fit=crop',
+    bgImage: '/images/pulau-merah-hero.webp',
     driver: {
       name: 'Pak Bagas Simatupang',
       title: 'Driver & Guide Professional',
@@ -45,7 +45,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     category: 'Tour Banyuwangi',
     headline: 'PAKET PRIVATE TOUR ALL-INCLUSIVE BANYUWANGI 3D2N',
     description: 'Eksplor Baluran, Djawatang, Teluk Hijau, hingga Kawah Ijen tanpa repot dengan supir berpengalaman.',
-    bgImage: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?q=80&w=1920&auto=format&fit=crop',
+    bgImage: '/images/tour-banyuwangi-hero.webp',
     driver: {
       name: 'Pak Bagas Simatupang',
       title: 'Driver & Guide Professional',

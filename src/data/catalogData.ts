@@ -30,7 +30,7 @@ export const TOUR_PACKAGES: TourPackage[] = [
     location: 'Pesanggaran, Banyuwangi',
     duration: '1D',
     price: 'Mulai dari Rp 200.000 (Menyesuaikan Jarak)',
-    image: '/images/pulau-merah-tourists.webp',
+    image: '/images/pulau-merah-hero.webp',
     rating: 4.8,
     features: ['Mobil AC Dingin Nyaman', 'Kunjungan Hutan De Djajatan', 'Tiket Masuk All-In', 'Supir Ramah']
   },
@@ -41,7 +41,7 @@ export const TOUR_PACKAGES: TourPackage[] = [
     location: 'Surabaya - Banyuwangi - Denpasar',
     duration: '3D2N Custom',
     price: 'Mulai dari Rp 200.000 (Menyesuaikan Jarak)',
-    image: '/images/car-front.webp',
+    image: '/images/tour-banyuwangi-hero.webp',
     rating: 4.9,
     features: ['Penyeberangan Kapal Ferri', 'BBM + Driver Pengalaman', 'Penjemputan Hotel/Bandara', 'Free Time Flexibility']
   }
