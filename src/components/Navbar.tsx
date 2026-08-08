@@ -32,30 +32,34 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
         <div className="flex items-center gap-3 pointer-events-auto">
           <button
             onClick={() => handleNavClick('beranda')}
+            aria-label="Navigasi ke Beranda Simatupang Tour"
             className="flex items-center gap-2.5 bg-white/95 md:backdrop-blur-md border border-zinc-200/80 px-3.5 py-1.5 rounded-full shadow-sm hover:border-zinc-300 transition-colors"
           >
             <img
               src="/images/logo.webp"
               alt="Logo Simatupang Tour & Travel"
+              width={32}
+              height={32}
               className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover border border-zinc-200"
               loading="eager"
             />
-            <span className="text-xs font-medium tracking-wide text-zinc-900 uppercase">
+            <span className="text-xs font-semibold tracking-wide text-zinc-900 uppercase">
               Simatupang Tour
             </span>
           </button>
         </div>
 
         {/* Desktop Floating Light Pill Menu */}
-        <nav className="pointer-events-auto hidden md:flex items-center gap-1 bg-white/95 backdrop-blur-md border border-zinc-200/80 rounded-full px-4 py-1.5 shadow-md">
+        <nav aria-label="Navigasi Utama" className="pointer-events-auto hidden md:flex items-center gap-1 bg-white/95 backdrop-blur-md border border-zinc-200/80 rounded-full px-4 py-1.5 shadow-md">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleNavClick(item.id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-normal transition-all duration-200 ${
+              aria-label={`Navigasi ke ${item.label}`}
+              className={`px-4 py-1.5 rounded-full text-xs transition-all duration-200 ${
                 activeSection === item.id
-                  ? 'bg-zinc-900 text-white font-medium shadow-sm'
-                  : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
+                  ? 'bg-zinc-900 text-white font-semibold shadow-sm'
+                  : 'text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 font-medium'
               }`}
             >
               {item.label}
@@ -67,7 +71,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
         <div className="flex items-center gap-2 pointer-events-auto">
           <button
             onClick={onOpenBooking}
-            className="hidden sm:flex group items-center gap-2 bg-zinc-900 hover:bg-black text-white font-normal px-4 py-2 rounded-full text-xs transition-all duration-200 shadow-md active:scale-95"
+            aria-label="Pesan sekarang via WhatsApp"
+            className="hidden sm:flex group items-center gap-2 bg-zinc-900 hover:bg-black text-white font-medium px-4 py-2 rounded-full text-xs transition-all duration-200 shadow-md active:scale-95"
           >
             <span>PESAN SEKARANG</span>
             <div className="w-4 h-4 rounded-full bg-white text-zinc-900 flex items-center justify-center transition-transform group-hover:translate-x-0.5">
@@ -79,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-white/95 border border-zinc-200 text-zinc-900 shadow-sm active:scale-95"
-            aria-label="Toggle Mobile Menu"
+            aria-label={mobileMenuOpen ? "Tutup Menu Navigasi" : "Buka Menu Navigasi"}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -96,28 +101,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
             transition={{ duration: 0.2 }}
             className="fixed inset-x-4 top-18 z-40 md:hidden bg-white border border-zinc-200 rounded-3xl p-6 shadow-2xl space-y-4"
           >
-            <div className="flex flex-col space-y-1">
+            <nav aria-label="Navigasi Seluler" className="flex flex-col space-y-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
+                  aria-label={`Navigasi seluler ke ${item.label}`}
                   className={`text-left px-4 py-2.5 rounded-xl text-sm transition-colors ${
                     activeSection === item.id
-                      ? 'bg-zinc-900 text-white font-medium'
-                      : 'text-zinc-700 hover:bg-zinc-100'
+                      ? 'bg-zinc-900 text-white font-semibold'
+                      : 'text-zinc-800 hover:bg-zinc-100 font-medium'
                   }`}
                 >
                   {item.label}
                 </button>
               ))}
-            </div>
+            </nav>
 
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenBooking();
               }}
-              className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-medium transition-all shadow-md"
+              aria-label="Pesan sekarang via WhatsApp dari menu seluler"
+              className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-semibold transition-all shadow-md"
             >
               <span>PESAN SEKARANG VIA WHATSAPP</span>
               <ArrowRight className="w-3.5 h-3.5" />

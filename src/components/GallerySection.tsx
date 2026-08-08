@@ -53,11 +53,11 @@ export const GallerySection: React.FC = () => {
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          <span className="text-xs uppercase font-normal tracking-widest text-zinc-500 flex items-center gap-1.5">
-            <Camera className="w-3.5 h-3.5 text-zinc-700" />
+          <span className="text-xs uppercase font-semibold tracking-widest text-zinc-600 flex items-center gap-1.5">
+            <Camera className="w-3.5 h-3.5 text-zinc-800" />
             Galeri & Dokumentasi Perjalanan
           </span>
-          <h2 className="text-3xl md:text-4xl font-normal mt-2 text-zinc-900">
+          <h2 className="text-3xl md:text-4xl font-bold mt-2 text-zinc-900">
             Dokumentasi Asli Armada & Klien Kami
           </h2>
         </motion.div>
@@ -68,7 +68,7 @@ export const GallerySection: React.FC = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-50px' }}
           transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
-          className="text-sm text-zinc-600 max-w-md"
+          className="text-sm text-zinc-700 max-w-md font-medium"
         >
           Lihat foto dan video asli pelayanan supir, armada executive, serta keseruan liburan wisatawan di Banyuwangi, Kawah Ijen, Bromo, dan Pulau Merah.
         </motion.p>
@@ -77,21 +77,27 @@ export const GallerySection: React.FC = () => {
       {/* Media Cards with Staggered Scale & Fade Entrance */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {mediaItems.map((item, idx) => (
-          <motion.div
+          <motion.button
             key={item.id}
+            type="button"
+            aria-label={`Buka dokumentasi galeri ${item.title}`}
             initial={{ opacity: 0, scale: 0.92, y: 25 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.45, delay: idx * 0.1, ease: [0.25, 0.1, 0.25, 1.0] }}
             whileHover={{ y: -5, transition: { duration: 0.2 } }}
-            className="group relative h-72 rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100 shadow-sm cursor-pointer"
+            className="group text-left relative h-72 w-full rounded-2xl overflow-hidden border border-zinc-200 bg-zinc-100 shadow-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-zinc-900"
             onClick={() => setSelectedMedia(item)}
           >
             {item.type === 'image' ? (
               <img
                 src={item.url}
-                alt={item.title}
+                alt={`Foto Dokumentasi ${item.title}`}
+                width={600}
+                height={400}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
               />
             ) : (
               <div className="w-full h-full relative bg-zinc-900 flex items-center justify-center">
@@ -111,14 +117,14 @@ export const GallerySection: React.FC = () => {
             )}
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 group-hover:opacity-100 transition-opacity p-5 flex flex-col justify-between">
-              <span className="self-start text-[10px] uppercase tracking-wider font-medium text-white bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
+              <span className="self-start text-[10px] uppercase tracking-wider font-semibold text-white bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
                 {item.tag}
               </span>
-              <h4 className="text-sm font-medium text-white drop-shadow-sm">
+              <h3 className="text-sm font-semibold text-white drop-shadow-sm">
                 {item.title}
-              </h4>
+              </h3>
             </div>
-          </motion.div>
+          </motion.button>
         ))}
       </div>
 
@@ -142,10 +148,12 @@ export const GallerySection: React.FC = () => {
               className="relative z-10 max-w-4xl w-full bg-zinc-950 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl"
             >
               <div className="flex items-center justify-between p-4 bg-zinc-900 border-b border-zinc-800">
-                <h4 className="text-sm font-normal text-white">{selectedMedia.title}</h4>
+                <h3 className="text-sm font-medium text-white">{selectedMedia.title}</h3>
                 <button
+                  type="button"
                   onClick={() => setSelectedMedia(null)}
-                  className="p-1 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                  aria-label="Tutup pratinjau media galeri"
+                  className="p-1 rounded-full text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -155,7 +163,9 @@ export const GallerySection: React.FC = () => {
                 {selectedMedia.type === 'image' ? (
                   <img
                     src={selectedMedia.url}
-                    alt={selectedMedia.title}
+                    alt={`Detail Pratinjau ${selectedMedia.title}`}
+                    width={800}
+                    height={600}
                     className="max-h-[70vh] w-auto object-contain rounded-xl"
                   />
                 ) : (

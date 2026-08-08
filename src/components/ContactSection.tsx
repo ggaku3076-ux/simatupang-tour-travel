@@ -18,13 +18,13 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="lg:col-span-6 space-y-6"
         >
-          <span className="text-xs uppercase font-normal tracking-widest text-zinc-500">
+          <span className="text-xs uppercase font-semibold tracking-widest text-zinc-600">
             Hubungi Kami
           </span>
-          <h2 className="text-3xl md:text-4xl font-normal text-zinc-900">
+          <h2 className="text-3xl md:text-4xl font-bold text-zinc-900">
             Siap Memulai Perjalanan Impian Anda?
           </h2>
-          <p className="text-sm text-zinc-600 leading-relaxed">
+          <p className="text-sm text-zinc-700 leading-relaxed font-medium">
             Konsultasikan jadwal wisata Kawah Ijen, Bromo, atau pemesanan mobil pengantin pernikahan Anda langsung dengan tim operasional Simatupang Tour & Travel.
           </p>
 
@@ -38,8 +38,8 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
             >
               <Phone className="w-5 h-5 text-zinc-900" />
               <div>
-                <h4 className="text-xs text-zinc-500">WhatsApp / Telepon</h4>
-                <p className="text-sm text-zinc-900 font-medium">+62 895-1352-3714</p>
+                <h3 className="text-xs text-zinc-600 font-semibold">WhatsApp / Telepon</h3>
+                <p className="text-sm text-zinc-950 font-bold">+62 895-1352-3714</p>
               </div>
             </motion.div>
 
@@ -52,8 +52,8 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
             >
               <Mail className="w-5 h-5 text-zinc-900" />
               <div>
-                <h4 className="text-xs text-zinc-500">Email Resmi</h4>
-                <p className="text-sm text-zinc-900 font-medium">info@simatupangtour.com</p>
+                <h3 className="text-xs text-zinc-600 font-semibold">Email Resmi</h3>
+                <p className="text-sm text-zinc-950 font-bold">info@simatupangtour.com</p>
               </div>
             </motion.div>
 
@@ -66,8 +66,8 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
             >
               <MapPin className="w-5 h-5 text-zinc-900" />
               <div>
-                <h4 className="text-xs text-zinc-500">Alamat Kantor</h4>
-                <p className="text-sm text-zinc-900 font-medium">Jl. Raya Banyuwangi No. 88, Banyuwangi, Jawa Timur</p>
+                <h3 className="text-xs text-zinc-600 font-semibold">Alamat Kantor</h3>
+                <p className="text-sm text-zinc-950 font-bold">Jl. Raya Banyuwangi No. 88, Banyuwangi, Jawa Timur</p>
               </div>
             </motion.div>
           </div>
@@ -82,8 +82,8 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
           className="lg:col-span-6 flex items-center"
         >
           <div className="w-full bg-white border border-zinc-200 p-8 rounded-3xl space-y-6 shadow-sm">
-            <h3 className="text-xl font-normal text-zinc-900">Kirim Pesan Langsung</h3>
-            <p className="text-xs text-zinc-500">Isi formulir di bawah ini untuk konsultasi via WhatsApp:</p>
+            <h3 className="text-xl font-bold text-zinc-900">Kirim Pesan Langsung</h3>
+            <p className="text-xs text-zinc-600 font-medium">Isi formulir di bawah ini untuk konsultasi via WhatsApp:</p>
 
             <form
               onSubmit={(e) => {
@@ -93,28 +93,36 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
               className="space-y-4"
             >
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Nama Lengkap</label>
+                <label htmlFor="contact-name" className="block text-xs text-zinc-700 font-semibold mb-1">Nama Lengkap</label>
                 <input
+                  id="contact-name"
+                  name="contact-name"
                   type="text"
                   placeholder="Masukkan nama Anda"
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Nomor WhatsApp</label>
+                <label htmlFor="contact-phone" className="block text-xs text-zinc-700 font-semibold mb-1">Nomor WhatsApp</label>
                 <input
+                  id="contact-phone"
+                  name="contact-phone"
                   type="tel"
                   placeholder="089513523714"
-                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs text-zinc-500 mb-1">Jenis Layanan</label>
-                <select className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900">
+                <label htmlFor="contact-service" className="block text-xs text-zinc-700 font-semibold mb-1">Jenis Layanan</label>
+                <select
+                  id="contact-service"
+                  name="contact-service"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
+                >
                   <option value="ijen">Paket Kawah Ijen</option>
                   <option value="bromo">Paket Bromo</option>
                   <option value="pulau-merah">Pantai Pulau Merah</option>
@@ -125,7 +133,8 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
 
               <button
                 type="submit"
-                className="w-full bg-zinc-900 hover:bg-black text-white font-medium py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-98"
+                aria-label="Kirim formulir konsultasi via WhatsApp"
+                className="w-full bg-zinc-900 hover:bg-black text-white font-semibold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md active:scale-98"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>Kirim via WhatsApp</span>

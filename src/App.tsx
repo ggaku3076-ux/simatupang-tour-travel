@@ -30,14 +30,16 @@ export const App: React.FC = () => {
         activeSection={activeSection}
         setActiveSection={handleNavigate}
       />
-      <div id="beranda">
-        <Hero onOpenBooking={() => setIsBookingOpen(true)} />
-      </div>
-      <DestinationsSection onOpenBooking={() => setIsBookingOpen(true)} />
-      <WeddingCarSection onOpenBooking={() => setIsBookingOpen(true)} />
-      <GallerySection />
-      <AboutSection />
-      <ContactSection onOpenBooking={() => setIsBookingOpen(true)} />
+      <main id="main-content">
+        <div id="beranda">
+          <Hero onOpenBooking={() => setIsBookingOpen(true)} />
+        </div>
+        <DestinationsSection onOpenBooking={() => setIsBookingOpen(true)} />
+        <WeddingCarSection onOpenBooking={() => setIsBookingOpen(true)} />
+        <GallerySection />
+        <AboutSection />
+        <ContactSection onOpenBooking={() => setIsBookingOpen(true)} />
+      </main>
       <Footer />
       <BookingModal
         isOpen={isBookingOpen}

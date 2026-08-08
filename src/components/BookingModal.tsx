@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Compass } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 
-interface ModalProps {
+interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const BookingModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
+export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [service, setService] = useState('Paket Kawah Ijen');
+  const [service, setService] = useState('Ekspedisi Midnight Kawah Ijen');
   const [date, setDate] = useState('');
   const [notes, setNotes] = useState('');
-
-  if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,105 +21,122 @@ export const BookingModal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
-          className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         />
 
+        {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 10 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 10 }}
-          className="relative z-10 w-full max-w-md bg-white border border-zinc-200 rounded-3xl p-6 shadow-2xl text-zinc-900"
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
+          transition={{ duration: 0.2 }}
+          className="relative z-10 w-full max-w-lg bg-white border border-zinc-200 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6"
         >
-          <div className="flex items-center justify-between pb-4 border-b border-zinc-200">
-            <div className="flex items-center gap-2">
-              <Compass className="w-5 h-5 text-zinc-900" />
-              <h3 className="text-base font-normal text-zinc-900">Form Pemesanan & Konsultasi</h3>
+          <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
+            <div>
+              <h2 className="text-lg font-bold text-zinc-900">Form Pemesanan & Konsultasi</h2>
+              <p className="text-xs text-zinc-600 font-medium">Terhubung langsung dengan Admin WhatsApp Simatupang Tour</p>
             </div>
             <button
+              type="button"
               onClick={onClose}
-              className="p-1 rounded-full text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+              aria-label="Tutup modal pemesanan"
+              className="p-1 rounded-full text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Nama Lengkap</label>
+              <label htmlFor="modal-name" className="block text-xs font-semibold text-zinc-700 mb-1">Nama Lengkap</label>
               <input
+                id="modal-name"
+                name="modal-name"
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Contoh: Budi Santoso"
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                placeholder="Masukkan nama lengkap Anda"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Nomor WhatsApp</label>
+              <label htmlFor="modal-phone" className="block text-xs font-semibold text-zinc-700 mb-1">Nomor WhatsApp</label>
               <input
+                id="modal-phone"
+                name="modal-phone"
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="089513523714"
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Pilihan Layanan</label>
+              <label htmlFor="modal-service" className="block text-xs font-semibold text-zinc-700 mb-1">Pilih Paket / Layanan</label>
               <select
+                id="modal-service"
+                name="modal-service"
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
               >
-                <option value="Paket Kawah Ijen Blue Fire">Paket Kawah Ijen Blue Fire</option>
-                <option value="Sunrise Gunung Bromo VIP">Sunrise Gunung Bromo VIP</option>
-                <option value="Pantai Pulau Merah Banyuwangi">Pantai Pulau Merah Banyuwangi</option>
-                <option value="Private Tour Banyuwangi 3D2N">Private Tour Banyuwangi 3D2N</option>
-                <option value="Wedding Car - Toyota Alphard">Wedding Car - Toyota Alphard</option>
-                <option value="Wedding Car - Mercedes-Benz">Wedding Car - Mercedes-Benz</option>
+                <option value="Ekspedisi Midnight Kawah Ijen">Ekspedisi Midnight Kawah Ijen Blue Fire</option>
+                <option value="Private Tour Sunrise Bromo">Private Tour Sunrise Bromo & Pasir Berbisik</option>
+                <option value="Sunset Excursion Pulau Merah">Sunset Excursion Pantai Pulau Merah & De Djajatan</option>
+                <option value="Shuttle & Tour Banyuwangi - Bali">Private Shuttle & Tour Banyuwangi - Bali Overland</option>
+                <option value="Honda Mobilio Facelift Executive">Rental Mobil Pengantin Honda Mobilio Facelift</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Rencana Tanggal Perjalanan</label>
+              <label htmlFor="modal-date" className="block text-xs font-semibold text-zinc-700 mb-1">Rencana Tanggal Keberangkatan</label>
               <input
+                id="modal-date"
+                name="modal-date"
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-xs text-zinc-500 mb-1">Catatan Tambahan (Opsional)</label>
+              <label htmlFor="modal-notes" className="block text-xs font-semibold text-zinc-700 mb-1">Catatan Tambahan (Opsional)</label>
               <textarea
+                id="modal-notes"
+                name="modal-notes"
+                rows={2}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                rows={2}
-                placeholder="Jumlah peserta, lokasi penjemputan, dll."
-                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 resize-none"
+                placeholder="Jumlah peserta, lokasi jemput, dll."
+                className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-3.5 py-2 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium resize-none"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full mt-2 bg-zinc-900 hover:bg-black text-white font-medium py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+              aria-label="Kirim pemesanan ke WhatsApp Simatupang Tour"
+              className="w-full bg-zinc-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md active:scale-98"
             >
               <Send className="w-4 h-4" />
-              <span>Kirim Pemesanan via WhatsApp</span>
+              <span>Kirim Pemesanan ke WhatsApp</span>
             </button>
           </form>
         </motion.div>

@@ -41,7 +41,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
 
   return (
     <section className="relative w-full h-screen min-h-[650px] bg-zinc-950 overflow-hidden text-white flex flex-col justify-between pt-24 sm:pt-28 pb-6 px-4 sm:px-8 md:px-12 lg:px-16">
-      {/* Background Image Pure & Clear (Fast Local WebP Image) */}
+      {/* Background Image Pure & Clear (Fast LCP Image) */}
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id}
@@ -53,17 +53,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
         >
           <img
             src={slide.bgImage}
-            alt={slide.category}
+            alt={`Foto Latar ${slide.category} Simatupang Tour`}
+            width={1920}
+            height={1080}
             className="w-full h-full object-cover object-center"
-            loading="eager"
+            loading={currentIndex === 0 ? "eager" : "lazy"}
             decoding="async"
+            fetchPriority={currentIndex === 0 ? "high" : "low"}
           />
         </motion.div>
       </AnimatePresence>
 
       {/* Main Content Layout Grid */}
       <div className="relative z-10 max-w-7xl mx-auto w-full my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 items-center">
-        {/* Kiri Tengah: Large Satoshi Bold Headline Text (Mobile Responsive Size) */}
+        {/* Kiri Tengah: Large Satoshi Bold Headline Text */}
         <div className="lg:col-span-7 space-y-3 sm:space-y-4">
           <motion.h1
             key={slide.id + '-headline'}
@@ -84,14 +87,14 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
           </motion.h1>
         </div>
 
-        {/* Kanan Tengah: Secondary Description (White Text with Translucent Dark Backdrop) */}
+        {/* Kanan Tengah: Secondary Description (High Contrast White Text) */}
         <div className="lg:col-span-5 flex flex-col items-start lg:items-end text-left">
           <motion.p
             key={slide.id + '-desc'}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.12 }}
-            className="text-xs sm:text-sm md:text-base font-normal text-white max-w-md leading-relaxed bg-black/50 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/20 shadow-xl"
+            className="text-xs sm:text-sm md:text-base font-normal text-white max-w-md leading-relaxed bg-black/60 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/20 shadow-xl"
           >
             {slide.description}
           </motion.p>
@@ -101,17 +104,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
       {/* Bottom Control & Info Bar Grid */}
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-end">
         {/* Kiri Bawah: Category Tab Pills */}
-        <div className="lg:col-span-7 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div aria-label="Pilih Kategori Destinasi Hero" className="lg:col-span-7 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           {HERO_SLIDES.map((item, idx) => {
             const isActive = idx === currentIndex;
             return (
               <button
                 key={item.id}
                 onClick={() => setCurrentIndex(idx)}
-                className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-normal transition-all duration-200 whitespace-nowrap border shadow-md ${
+                aria-label={`Pilih kategori slide ${item.category}`}
+                className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs transition-all duration-200 whitespace-nowrap border shadow-md ${
                   isActive
-                    ? 'bg-white text-zinc-950 border-white scale-105 font-medium'
-                    : 'bg-black/60 hover:bg-black/80 text-white border-white/30 backdrop-blur-md'
+                    ? 'bg-white text-zinc-950 border-white scale-105 font-bold'
+                    : 'bg-black/70 hover:bg-black/90 text-white border-white/30 backdrop-blur-md font-medium'
                 }`}
               >
                 {item.category}
@@ -123,17 +127,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
         {/* Kanan Bawah: Controller & Specialist Driver Card */}
         <div className="lg:col-span-5 flex flex-wrap sm:flex-nowrap items-center sm:items-end justify-between sm:justify-end gap-3 sm:gap-6">
           {/* Slider Controller (< 01 --------- 05 >) */}
-          <div className="flex items-center gap-2.5 bg-black/60 backdrop-blur-md border border-white/20 rounded-full px-3.5 py-1.5 sm:px-4 sm:py-2 shadow-xl text-white">
+          <div className="flex items-center gap-2.5 bg-black/70 backdrop-blur-md border border-white/20 rounded-full px-3.5 py-1.5 sm:px-4 sm:py-2 shadow-xl text-white">
             <button
               onClick={handlePrev}
+              aria-label="Slide Kategori Sebelumnya"
               className="p-1 rounded-full text-zinc-200 hover:text-white transition-colors"
             >
               <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
-            <span className="text-xs font-mono text-white">
+            <span className="text-xs font-mono text-white font-bold">
               0{currentIndex + 1}
             </span>
-            <div className="w-12 sm:w-16 h-[2px] bg-white/30 rounded-full overflow-hidden">
+            <div className="w-12 sm:w-16 h-[2px] bg-white/40 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-white"
                 initial={{ width: '0%' }}
@@ -141,11 +146,12 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
                 transition={{ duration: 0.3 }}
               />
             </div>
-            <span className="text-xs font-mono text-zinc-300">
+            <span className="text-xs font-mono text-zinc-200">
               0{HERO_SLIDES.length}
             </span>
             <button
               onClick={handleNext}
+              aria-label="Slide Kategori Berikutnya"
               className="p-1 rounded-full text-zinc-200 hover:text-white transition-colors"
             >
               <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
@@ -158,19 +164,23 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="flex items-center gap-3 bg-black/75 backdrop-blur-md border border-white/20 p-2.5 sm:p-3 rounded-2xl shadow-2xl max-w-xs cursor-pointer hover:border-white/40 transition-colors"
+            className="flex items-center gap-3 bg-black/80 backdrop-blur-md border border-white/20 p-2.5 sm:p-3 rounded-2xl shadow-2xl max-w-xs cursor-pointer hover:border-white/40 transition-colors"
             onClick={onOpenBooking}
+            aria-label={`Kartu Spesialis Driver ${slide.driver.name}`}
           >
             <img
               src={slide.driver.avatar}
-              alt={slide.driver.name}
+              alt={`Foto Avatar ${slide.driver.name}`}
+              width={48}
+              height={48}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl object-cover border border-white/30"
-              loading="eager"
+              loading="lazy"
+              decoding="async"
             />
             <div className="flex flex-col text-left">
-              <h4 className="text-xs font-medium text-white">{slide.driver.name}</h4>
+              <h3 className="text-xs font-semibold text-white">{slide.driver.name}</h3>
               <p className="text-[10px] sm:text-[11px] font-normal text-zinc-200">{slide.driver.title}</p>
-              <div className="flex items-center gap-1 mt-0.5 text-[10px] text-amber-300 font-normal">
+              <div className="flex items-center gap-1 mt-0.5 text-[10px] text-amber-300 font-medium">
                 <Star className="w-3 h-3 text-amber-300 fill-amber-300" />
                 <span>{slide.driver.badge}</span>
               </div>
