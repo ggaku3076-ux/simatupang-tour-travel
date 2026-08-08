@@ -6,7 +6,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     category: 'Kawah Ijen',
     headline: 'JELAJAHI KEINDAHAN JAWA-BALI BERSAMA SIMATUPANG TOUR & TRAVEL',
     description: 'Spesialis paket wisata eksklusif Banyuwangi, Kawah Ijen, Bromo, Pulau Merah, rute Surabaya-Bali & Layanan Premium Wedding Car.',
-    bgImage: '/images/ijen-custom.png',
+    bgImage: '/images/ijen-custom.webp',
     driver: {
       name: 'Pak Bagas Simatupang',
       title: 'Driver & Guide Professional',

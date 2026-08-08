@@ -14,14 +14,14 @@
     <meta property="og:image" content="/images/logo.webp" />
     <meta property="og:type" content="website" />
 
-    <!-- LCP Image Preload -->
-    <link rel="preload" as="image" href="/images/ijen-custom.png" type="image/png" fetchpriority="high" />
+    <!-- High Priority LCP Image Preload -->
+    <link rel="preload" as="image" href="/images/ijen-custom.webp" type="image/webp" fetchpriority="high" />
 
-    <!-- Fonts & Preconnect -->
+    <!-- Non-blocking Fonts & Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   </head>
   <body class="bg-white text-zinc-900 font-sans antialiased selection:bg-zinc-200 selection:text-zinc-900 overflow-x-hidden">
     <div id="root"></div>

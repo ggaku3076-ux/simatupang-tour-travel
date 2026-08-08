@@ -8,7 +8,7 @@ export const TOUR_PACKAGES: TourPackage[] = [
     location: 'Banyuwangi, Jawa Timur',
     duration: '12 Jam (Midnight)',
     price: 'Mulai dari Rp 200.000 (Menyesuaikan Jarak)',
-    image: '/images/ijen-custom.png',
+    image: '/images/ijen-custom.webp',
     rating: 4.9,
     features: ['Masker Gas Respirator', 'Tiket Masuk Taman Nasional', 'Driver & Guide Lokal', 'Antar Jemput Surabaya/Banyuwangi']
   },
