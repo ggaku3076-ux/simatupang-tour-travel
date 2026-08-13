@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLenis } from './hooks/useLenis';
 import { AdminProvider } from './context/AdminContext';
 import { Navbar } from './components/Navbar';
@@ -9,13 +9,23 @@ import { GallerySection } from './components/GallerySection';
 import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
 import { BookingModal } from './components/BookingModal';
-import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
+import { AdminPage } from './pages/AdminPage';
 
 export const AppContent: React.FC = () => {
   useLenis();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
+  const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   const handleNavigate = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -24,6 +34,11 @@ export const AppContent: React.FC = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
+
+  // Dedicated Route for /admin and #admin
+  if (currentPath === '/admin' || window.location.hash === '#admin') {
+    return <AdminPage />;
+  }
 
   return (
     <div className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-zinc-200 selection:text-zinc-900">
@@ -47,7 +62,6 @@ export const AppContent: React.FC = () => {
         isOpen={isBookingOpen}
         onClose={() => setIsBookingOpen(false)}
       />
-      <AdminPanel />
     </div>
   );
 };
