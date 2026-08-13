@@ -17,14 +17,22 @@ export const AppContent: React.FC = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
   const [currentPath, setCurrentPath] = useState<string>(() => window.location.pathname);
+  const [currentHash, setCurrentHash] = useState<string>(() => window.location.hash);
+  const [currentSearch, setCurrentSearch] = useState<string>(() => window.location.search);
 
   useEffect(() => {
-    const handlePopState = () => {
+    const handleLocationChange = () => {
       setCurrentPath(window.location.pathname);
+      setCurrentHash(window.location.hash);
+      setCurrentSearch(window.location.search);
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
   }, []);
 
   const handleNavigate = (sectionId: string) => {
@@ -35,8 +43,14 @@ export const AppContent: React.FC = () => {
     }
   };
 
-  // Dedicated Route for /admin and #admin
-  if (currentPath === '/admin' || window.location.hash === '#admin') {
+  // Check if user is accessing admin via /admin, #admin, or ?admin
+  const isAdminRoute =
+    currentPath === '/admin' ||
+    currentPath === '/admin/' ||
+    currentHash === '#admin' ||
+    currentSearch.includes('admin');
+
+  if (isAdminRoute) {
     return <AdminPage />;
   }
 
