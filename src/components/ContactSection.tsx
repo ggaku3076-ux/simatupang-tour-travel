@@ -1,12 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, MessageSquare } from 'lucide-react';
+import { useAdmin } from '../context/AdminContext';
 
 interface ContactProps {
   onOpenBooking: () => void;
 }
 
 export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
+  const { contactInfo } = useAdmin();
+
   return (
     <section id="kontak" className="py-24 bg-zinc-50 border-t border-zinc-200 px-6 md:px-12 text-zinc-900 overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -39,7 +42,9 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
               <Phone className="w-5 h-5 text-zinc-900" />
               <div>
                 <h3 className="text-xs text-zinc-600 font-semibold">WhatsApp / Telepon</h3>
-                <p className="text-sm text-zinc-950 font-bold">+62 895-1352-3714</p>
+                <a href={`https://wa.me/${contactInfo.whatsappRaw}`} target="_blank" rel="noreferrer" className="text-sm text-zinc-950 font-bold hover:underline">
+                  {contactInfo.phone}
+                </a>
               </div>
             </motion.div>
 
@@ -53,7 +58,7 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
               <Mail className="w-5 h-5 text-zinc-900" />
               <div>
                 <h3 className="text-xs text-zinc-600 font-semibold">Email Resmi</h3>
-                <p className="text-sm text-zinc-950 font-bold">info@simatupangtour.com</p>
+                <p className="text-sm text-zinc-950 font-bold">{contactInfo.email}</p>
               </div>
             </motion.div>
 
@@ -67,7 +72,7 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
               <MapPin className="w-5 h-5 text-zinc-900" />
               <div>
                 <h3 className="text-xs text-zinc-600 font-semibold">Alamat Kantor</h3>
-                <p className="text-sm text-zinc-950 font-bold">Jl. Raya Banyuwangi No. 88, Banyuwangi, Jawa Timur</p>
+                <p className="text-sm text-zinc-950 font-bold">{contactInfo.address}</p>
               </div>
             </motion.div>
           </div>
@@ -110,7 +115,7 @@ export const ContactSection: React.FC<ContactProps> = ({ onOpenBooking }) => {
                   id="contact-phone"
                   name="contact-phone"
                   type="tel"
-                  placeholder="089513523714"
+                  placeholder={contactInfo.whatsappRaw}
                   className="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-2.5 text-xs text-zinc-900 focus:outline-none focus:border-zinc-900 font-medium"
                   required
                 />

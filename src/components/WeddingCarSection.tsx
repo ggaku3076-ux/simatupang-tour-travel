@@ -1,13 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, ShieldCheck, Heart } from 'lucide-react';
-import { WEDDING_CARS } from '../data/catalogData';
+import { useAdmin } from '../context/AdminContext';
 
 interface WeddingCarProps {
   onOpenBooking: () => void;
 }
 
 export const WeddingCarSection: React.FC<WeddingCarProps> = ({ onOpenBooking }) => {
+  const { weddingCars } = useAdmin();
+
   return (
     <section id="wedding" className="py-24 bg-zinc-50 border-y border-zinc-200 px-6 md:px-12 text-zinc-900 overflow-hidden">
       <div className="max-w-7xl mx-auto">
@@ -42,7 +44,7 @@ export const WeddingCarSection: React.FC<WeddingCarProps> = ({ onOpenBooking }) 
 
         {/* Wedding Car Card with Scale Pop & Fade Up */}
         <div className="grid grid-cols-1 max-w-xl mx-auto gap-8">
-          {WEDDING_CARS.map((car, idx) => (
+          {weddingCars.map((car, idx) => (
             <motion.div
               key={car.id}
               initial={{ opacity: 0, scale: 0.94, y: 30 }}

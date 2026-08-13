@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
-import { HERO_SLIDES } from '../data/heroData';
+import { useAdmin } from '../context/AdminContext';
 
 interface HeroProps {
   onOpenBooking: () => void;
@@ -26,15 +26,18 @@ const wordVariants = {
 };
 
 export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
+  const { heroSlides } = useAdmin();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const slide = HERO_SLIDES[currentIndex];
+
+  const safeIndex = currentIndex >= heroSlides.length ? 0 : currentIndex;
+  const slide = heroSlides[safeIndex] || heroSlides[0];
 
   const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+    setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
   };
 
   const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+    setCurrentIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
   };
 
   const words = useMemo(() => slide.headline.split(' '), [slide.headline]);
@@ -44,7 +47,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
       {/* Background Image Pure & Clear (Fast LCP Image) */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={slide.id}
+          key={slide.id + slide.bgImage}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -57,9 +60,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
             width={1920}
             height={1080}
             className="w-full h-full object-cover object-center"
-            loading={currentIndex === 0 ? "eager" : "lazy"}
+            loading={safeIndex === 0 ? "eager" : "lazy"}
             decoding="async"
-            fetchPriority={currentIndex === 0 ? "high" : "low"}
+            fetchPriority={safeIndex === 0 ? "high" : "low"}
           />
         </motion.div>
       </AnimatePresence>
@@ -69,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
         {/* Kiri Tengah: Large Satoshi Bold Headline Text */}
         <div className="lg:col-span-7 space-y-3 sm:space-y-4">
           <motion.h1
-            key={slide.id + '-headline'}
+            key={slide.id + '-headline-' + slide.headline}
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -77,7 +80,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
           >
             {words.map((word, i) => (
               <motion.span
-                key={`${slide.id}-${i}`}
+                key={`${slide.id}-${i}-${word}`}
                 variants={wordVariants}
                 className="inline-block mr-2 sm:mr-2.5 will-change-transform"
               >
@@ -90,7 +93,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
         {/* Kanan Tengah: Secondary Description (High Contrast White Text) */}
         <div className="lg:col-span-5 flex flex-col items-start lg:items-end text-left">
           <motion.p
-            key={slide.id + '-desc'}
+            key={slide.id + '-desc-' + slide.description}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.12 }}
@@ -105,8 +108,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
       <div className="relative z-10 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-end">
         {/* Kiri Bawah: Category Tab Pills */}
         <div aria-label="Pilih Kategori Destinasi Hero" className="lg:col-span-7 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {HERO_SLIDES.map((item, idx) => {
-            const isActive = idx === currentIndex;
+          {heroSlides.map((item, idx) => {
+            const isActive = idx === safeIndex;
             return (
               <button
                 key={item.id}
@@ -136,18 +139,18 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
               <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
             <span className="text-xs font-mono text-white font-bold">
-              0{currentIndex + 1}
+              0{safeIndex + 1}
             </span>
             <div className="w-12 sm:w-16 h-[2px] bg-white/40 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-white"
                 initial={{ width: '0%' }}
-                animate={{ width: `${((currentIndex + 1) / HERO_SLIDES.length) * 100}%` }}
+                animate={{ width: `${((safeIndex + 1) / heroSlides.length) * 100}%` }}
                 transition={{ duration: 0.3 }}
               />
             </div>
             <span className="text-xs font-mono text-zinc-200">
-              0{HERO_SLIDES.length}
+              0{heroSlides.length}
             </span>
             <button
               onClick={handleNext}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLenis } from './hooks/useLenis';
+import { AdminProvider } from './context/AdminContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { DestinationsSection } from './components/DestinationsSection';
@@ -8,9 +9,10 @@ import { GallerySection } from './components/GallerySection';
 import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
 import { BookingModal } from './components/BookingModal';
+import { AdminPanel } from './components/AdminPanel';
 import { Footer } from './components/Footer';
 
-export const App: React.FC = () => {
+export const AppContent: React.FC = () => {
   useLenis();
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('beranda');
@@ -45,7 +47,16 @@ export const App: React.FC = () => {
         isOpen={isBookingOpen}
         onClose={() => setIsBookingOpen(false)}
       />
+      <AdminPanel />
     </div>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <AdminProvider>
+      <AppContent />
+    </AdminProvider>
   );
 };
 

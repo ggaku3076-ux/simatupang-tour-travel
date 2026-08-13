@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, Edit3 } from 'lucide-react';
+import { useAdmin } from '../context/AdminContext';
+import { AdminLoginModal } from './AdminLoginModal';
 
 interface NavbarProps {
   onOpenBooking: () => void;
@@ -9,7 +11,9 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, setActiveSection }) => {
+  const { isAdminLoggedIn, setIsAdminPanelOpen } = useAdmin();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
 
   const navItems = [
     { id: 'beranda', label: 'Beranda' },
@@ -23,6 +27,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
   const handleNavClick = (id: string) => {
     setActiveSection(id);
     setMobileMenuOpen(false);
+  };
+
+  const handleAdminClick = () => {
+    if (isAdminLoggedIn) {
+      setIsAdminPanelOpen(true);
+    } else {
+      setIsAdminModalOpen(true);
+    }
   };
 
   return (
@@ -67,8 +79,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
           ))}
         </nav>
 
-        {/* Right Action & Mobile Toggle */}
+        {/* Right Action & Admin Toggle */}
         <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Admin Mode Pill Button */}
+          <button
+            onClick={handleAdminClick}
+            aria-label="Mode Edit Admin"
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm ${
+              isAdminLoggedIn
+                ? 'bg-emerald-500 hover:bg-emerald-400 text-zinc-950 border border-emerald-400'
+                : 'bg-white/90 hover:bg-white text-zinc-700 border border-zinc-200'
+            }`}
+          >
+            <Edit3 className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{isAdminLoggedIn ? 'EDIT CMS' : 'ADMIN'}</span>
+          </button>
+
           <button
             onClick={onOpenBooking}
             aria-label="Pesan sekarang via WhatsApp"
@@ -118,20 +144,38 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, activeSection, se
               ))}
             </nav>
 
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenBooking();
-              }}
-              aria-label="Pesan sekarang via WhatsApp dari menu seluler"
-              className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-semibold transition-all shadow-md"
-            >
-              <span>PESAN SEKARANG VIA WHATSAPP</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </button>
+            <div className="pt-2 flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleAdminClick();
+                }}
+                className="w-full flex items-center justify-center gap-2 bg-emerald-500 text-zinc-950 py-2.5 rounded-2xl text-xs font-bold transition-all shadow-sm"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>{isAdminLoggedIn ? 'BUKA PANEL EDIT ADMIN CMS' : 'LOGIN MODE ADMIN EDIT'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenBooking();
+                }}
+                aria-label="Pesan sekarang via WhatsApp dari menu seluler"
+                className="w-full flex items-center justify-center gap-2 bg-zinc-900 hover:bg-black text-white py-3 rounded-2xl text-xs font-semibold transition-all shadow-md"
+              >
+                <span>PESAN SEKARANG VIA WHATSAPP</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AdminLoginModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+      />
     </>
   );
 };

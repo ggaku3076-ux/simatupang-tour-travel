@@ -1,13 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Clock, Star, ArrowRight } from 'lucide-react';
-import { TOUR_PACKAGES } from '../data/catalogData';
+import { useAdmin } from '../context/AdminContext';
 
 interface DestinationsProps {
   onOpenBooking: () => void;
 }
 
 export const DestinationsSection: React.FC<DestinationsProps> = ({ onOpenBooking }) => {
+  const { tourPackages } = useAdmin();
+
   return (
     <section id="destinasi" className="py-24 px-6 md:px-12 max-w-7xl mx-auto text-zinc-900 bg-white overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
@@ -40,7 +42,7 @@ export const DestinationsSection: React.FC<DestinationsProps> = ({ onOpenBooking
 
       {/* Cards with Staggered Entrance from Bottom */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {TOUR_PACKAGES.map((pkg, idx) => (
+        {tourPackages.map((pkg, idx) => (
           <motion.div
             key={pkg.id}
             initial={{ opacity: 0, y: 35 }}
