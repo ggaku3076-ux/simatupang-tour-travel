@@ -33,3 +33,11 @@ export interface WeddingCar {
   specs: string[];
   includes: string[];
 }
+
+export interface GalleryItem {
+  id: string;
+  type: 'image' | 'video';
+  url: string;
+  title: string;
+  tag: string;
+}

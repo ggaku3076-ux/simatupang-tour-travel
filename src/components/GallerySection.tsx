@@ -1,47 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Camera, X } from 'lucide-react';
+import { useAdmin } from '../context/AdminContext';
 
 export const GallerySection: React.FC = () => {
+  const { galleryItems } = useAdmin();
   const [selectedMedia, setSelectedMedia] = useState<{ type: 'image' | 'video'; url: string; title: string } | null>(null);
-
-  const mediaItems = [
-    {
-      id: 'img-1',
-      type: 'image' as const,
-      url: '/images/car-mobilio.webp',
-      title: 'Armada Mobil Executive Simatupang Tour',
-      tag: 'Armada & Shuttle'
-    },
-    {
-      id: 'img-2',
-      type: 'image' as const,
-      url: '/images/car-front.webp',
-      title: 'Tampilan Depan Armada Siap Rute Jawa-Bali',
-      tag: 'Kondisi Armada'
-    },
-    {
-      id: 'img-3',
-      type: 'image' as const,
-      url: '/images/pulau-merah-tourists.webp',
-      title: 'Dokumentasi Wisatawan di Pantai Pulau Merah Banyuwangi',
-      tag: 'Dokumentasi Tour'
-    },
-    {
-      id: 'vid-1',
-      type: 'video' as const,
-      url: '/videos/video-1.mp4',
-      title: 'Video Perjalanan & Layanan Driver Professional',
-      tag: 'Video Dok'
-    },
-    {
-      id: 'vid-2',
-      type: 'video' as const,
-      url: '/videos/video-2.mp4',
-      title: 'Video Penjemputan & Suasana Wisata Jawa-Bali',
-      tag: 'Video Dok'
-    }
-  ];
 
   return (
     <section id="galeri" className="py-24 px-6 md:px-12 max-w-7xl mx-auto text-zinc-900 bg-white overflow-hidden">
@@ -76,7 +40,7 @@ export const GallerySection: React.FC = () => {
 
       {/* Media Cards with Staggered Scale & Fade Entrance */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mediaItems.map((item, idx) => (
+        {galleryItems.map((item, idx) => (
           <motion.button
             key={item.id}
             type="button"

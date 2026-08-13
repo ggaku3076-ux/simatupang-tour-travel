@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Lock, Edit3, Save, RefreshCw, LogOut, Check, Image as ImageIcon, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Lock, Edit3, Save, RefreshCw, LogOut, Check, Image as ImageIcon, ExternalLink, ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import { useAdmin } from '../context/AdminContext';
 
 export const AdminPage: React.FC = () => {
@@ -11,21 +11,31 @@ export const AdminPage: React.FC = () => {
     heroSlides,
     tourPackages,
     weddingCars,
+    galleryItems,
     contactInfo,
     updateHeroSlide,
     updateTourPackage,
     updateWeddingCar,
+    addGalleryItem,
+    updateGalleryItem,
+    deleteGalleryItem,
     updateContactInfo,
     resetToDefaults,
   } = useAdmin();
 
   const [passcode, setPasscode] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [activeTab, setActiveTab] = useState<'hero' | 'destinasi' | 'wedding' | 'kontak'>('hero');
+  const [activeTab, setActiveTab] = useState<'hero' | 'destinasi' | 'wedding' | 'galeri' | 'kontak'>('hero');
   const [selectedSlideId, setSelectedSlideId] = useState<string>(heroSlides[0]?.id || 'ijen');
   const [selectedPkgId, setSelectedPkgId] = useState<string>(tourPackages[0]?.id || 'pkg-ijen');
   const [selectedCarId, setSelectedCarId] = useState<string>(weddingCars[0]?.id || 'car-mobilio');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string>('');
+
+  // New Gallery Form State
+  const [newGalTitle, setNewGalTitle] = useState('');
+  const [newGalTag, setNewGalTag] = useState('Dokumentasi Tour');
+  const [newGalType, setNewGalType] = useState<'image' | 'video'>('image');
+  const [newGalUrl, setNewGalUrl] = useState('');
 
   const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +62,23 @@ export const AdminPage: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleAddGallerySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newGalTitle || !newGalUrl) {
+      alert('Mohon isi Judul dan URL/Upload Berkas media.');
+      return;
+    }
+    addGalleryItem({
+      title: newGalTitle,
+      tag: newGalTag,
+      type: newGalType,
+      url: newGalUrl,
+    });
+    setNewGalTitle('');
+    setNewGalUrl('');
+    triggerSuccess('Item Galeri Baru Berhasil Ditambahkan!');
   };
 
   const activeSlide = heroSlides.find((s) => s.id === selectedSlideId) || heroSlides[0];
@@ -138,7 +165,7 @@ export const AdminPage: React.FC = () => {
               <span>Halaman Panel Admin CMS</span>
               <span className="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30">Aktif</span>
             </h1>
-            <p className="text-xs text-zinc-400">Pengaturan Teks, Foto, Harga, & Kontak Website</p>
+            <p className="text-xs text-zinc-400">Pengaturan Teks, Foto, Galeri, Harga, & Kontak Website</p>
           </div>
         </div>
 
@@ -184,7 +211,7 @@ export const AdminPage: React.FC = () => {
               activeTab === 'hero' ? 'bg-emerald-500 text-zinc-950 shadow-md' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            🖼️ Edit Hero Slides (Header Utama)
+            🖼️ Edit Hero Slides
           </button>
           <button
             onClick={() => setActiveTab('destinasi')}
@@ -192,7 +219,7 @@ export const AdminPage: React.FC = () => {
               activeTab === 'destinasi' ? 'bg-emerald-500 text-zinc-950 shadow-md' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            🏝️ Edit Paket Wisata & Harga
+            🏝️ Edit Paket Wisata
           </button>
           <button
             onClick={() => setActiveTab('wedding')}
@@ -200,7 +227,15 @@ export const AdminPage: React.FC = () => {
               activeTab === 'wedding' ? 'bg-emerald-500 text-zinc-950 shadow-md' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            🚗 Edit Rental Mobil Pengantin
+            🚗 Edit Wedding Car
+          </button>
+          <button
+            onClick={() => setActiveTab('galeri')}
+            className={`px-5 py-2.5 rounded-xl font-bold transition-all ${
+              activeTab === 'galeri' ? 'bg-emerald-500 text-zinc-950 shadow-md' : 'text-zinc-400 hover:text-white'
+            }`}
+          >
+            📷 Edit & Tambah Galeri ({galleryItems.length})
           </button>
           <button
             onClick={() => setActiveTab('kontak')}
@@ -208,7 +243,7 @@ export const AdminPage: React.FC = () => {
               activeTab === 'kontak' ? 'bg-emerald-500 text-zinc-950 shadow-md' : 'text-zinc-400 hover:text-white'
             }`}
           >
-            📞 Edit Nomor WA & Alamat
+            📞 Edit Kontak & WA
           </button>
         </div>
 
@@ -493,7 +528,139 @@ export const AdminPage: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 4: KONTAK & WA */}
+          {/* TAB 4: EDIT & TAMBAH GALERI */}
+          {activeTab === 'galeri' && (
+            <div className="space-y-8">
+              {/* Form Tambah Item Baru */}
+              <form onSubmit={handleAddGallerySubmit} className="bg-zinc-950 p-5 rounded-2xl border border-zinc-800 space-y-4">
+                <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  <span>Tambah Foto / Video Galeri Baru</span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-1">Judul / Deskripsi Galeri</label>
+                    <input
+                      type="text"
+                      value={newGalTitle}
+                      onChange={(e) => setNewGalTitle(e.target.value)}
+                      placeholder="Contoh: Suasana Penjemputan di Bandara Banyuwangi"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-1">Tag / Kategori Dokumentasi</label>
+                    <input
+                      type="text"
+                      value={newGalTag}
+                      onChange={(e) => setNewGalTag(e.target.value)}
+                      placeholder="Contoh: Dokumentasi Tour / Armada & Shuttle"
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-1">Jenis Media</label>
+                    <select
+                      value={newGalType}
+                      onChange={(e) => setNewGalType(e.target.value as 'image' | 'video')}
+                      className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                    >
+                      <option value="image">📷 Foto Gambar (Image)</option>
+                      <option value="video">🎥 Video (MP4)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-zinc-300 mb-1">URL Media / Upload File</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={newGalUrl}
+                        onChange={(e) => setNewGalUrl(e.target.value)}
+                        placeholder="/images/foto.webp atau /videos/video.mp4"
+                        className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-2.5 text-xs text-emerald-300 focus:outline-none focus:border-emerald-500 font-mono"
+                        required
+                      />
+                      <label className="cursor-pointer bg-zinc-800 hover:bg-zinc-700 text-white px-3 py-2.5 rounded-xl text-xs font-bold border border-zinc-700 transition-colors whitespace-nowrap flex items-center justify-center">
+                        Upload
+                        <input
+                          type="file"
+                          accept={newGalType === 'image' ? 'image/*' : 'video/*'}
+                          className="hidden"
+                          onChange={(e) => handleImageFileUpload(e, (url) => setNewGalUrl(url))}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-md active:scale-95"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>TAMBAHKAN KE GALERI WEBSITE</span>
+                </button>
+              </form>
+
+              {/* Daftar Galeri Terpasang */}
+              <div className="space-y-3">
+                <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Daftar Item Galeri Terpasang ({galleryItems.length}):</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {galleryItems.map((item) => (
+                    <div key={item.id} className="bg-zinc-950 p-4 rounded-2xl border border-zinc-800 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-16 h-12 rounded-lg bg-zinc-900 overflow-hidden border border-zinc-800 flex-shrink-0">
+                          {item.type === 'image' ? (
+                            <img src={item.url} alt={item.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-zinc-800 text-emerald-400 flex items-center justify-center font-bold text-[10px]">VIDEO</div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <input
+                            type="text"
+                            value={item.title}
+                            onChange={(e) => updateGalleryItem({ ...item, title: e.target.value })}
+                            className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-emerald-500 font-bold mb-1"
+                          />
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={item.tag}
+                              onChange={(e) => updateGalleryItem({ ...item, tag: e.target.value })}
+                              className="w-28 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-0.5 text-[10px] text-zinc-400 focus:outline-none focus:border-emerald-500"
+                            />
+                            <span className="text-[10px] text-emerald-400 uppercase">{item.type}</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            if (window.confirm(`Hapus item galeri "${item.title}"?`)) {
+                              deleteGalleryItem(item.id);
+                              triggerSuccess('Item galeri berhasil dihapus!');
+                            }
+                          }}
+                          className="p-2 rounded-xl text-zinc-500 hover:text-red-400 hover:bg-zinc-900 transition-colors"
+                          title="Hapus item galeri"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: KONTAK & WA */}
           {activeTab === 'kontak' && (
             <div className="space-y-4 max-w-2xl">
               <div>
